@@ -1,18 +1,15 @@
 $data = Get-Content -Path "$($PSScriptRoot)/input.txt"
-$horizontal = 0
-$vertical = 0
-$aim = 0
-foreach($d in $data) {
-    $parts = $d -split ' '
-    $command = $parts[0]
+$horizontal = $vertical = $aim = 0
+$data.ForEach({
+    $parts = $_ -split ' '
     $value = [int]$parts[1]
-    switch ($command) {
-        'forward' { 
+    switch ($parts[0].Length) {
+        7 { 
             $horizontal += $value 
-            $vertical += ($aim * $value)
+            $vertical += ($aim * $value )
         }
-        'down' { $aim += $value }
-        'up' { $aim -= $value }
+        4 { $aim += $value  }
+        2 { $aim -= $value  }
     }
-}
+})
 $horizontal * $vertical
